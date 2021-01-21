@@ -1,34 +1,48 @@
-# Custom-Report german-taxinvoice
-Gnucash Custom Report, Deutsche Kundenrechung direkt aus Gnucash erstellen. [Gnucash](https://www.gnucash.org/) ist eine quelloffene Buchhaltungssoftware für Privatanwender und kleinere Unternehmen. Es ist unter Windows, Linux und MacOS lauffähig.
+# Beautiful DACH Tax Invoice
+This repository is a fork of the work of Sven Eusewig's [original repository](https://github.com/sveneusewig/gnucash-german-taxinvoice). It aims to make further improvements to the German Taxinvoice template by generating a DIN5008 conform invoice for the DACH region.
 
-Der vorliegenende Report ist auf der Grundlage des Reports von Zelima, und chris [De/Kundenrechnung](https://wiki.gnucash.org/wiki/De/Kundenrechnung) und der von Gnucash enthaltenen taxinvoice.scm angepasst.
-
-## Voraussetzungen
-- [Gnucash](https://www.gnucash.org/) ab Version 4.2
+## Requirements
+- [Gnucash](https://www.gnucash.org/) Version >= 4.2
 
 ## Installation
-1. Für die Installation laden sie bitte die drei Dateien:
+To install this report you need to download the following files:
 
 - [german-taxinvoice.scm](german-taxinvoice.scm)
 - [german-taxinvoice.eguile.scm](german-taxinvoice.eguile.scm)
 
-herunter und speichern sie diese Dateien in das Verzeichnis in [GNC_DATA_HOME](https://wiki.gnucash.org/wiki/Configuration_Locations#GNC_DATA_HOME) ab. In diesem Verzeichnis sucht schließlich Gnucash eigens gestaltete Guile/Scheme Dateien.
+These need to be put into the [GNC_DATA_HOME](https://wiki.gnucash.org/wiki/Configuration_Locations#GNC_DATA_HOME) directory.
 
-2. Bearbeiten sie nun im Verzeichnis [GNC_CONFIG_HOME](https://wiki.gnucash.org/wiki/Configuration_Locations#GNC_CONFIG_HOME) die Datei ```config-user.scm``` oder falls sie nicht exisitiert, legen sie diese an und fügen sie den folgenden Inhalt dieser Datei hinzu:
+Create or edit the file `config-user.scm` in the [GNC_CONFIG_HOME](https://wiki.gnucash.org/wiki/Configuration_Locations#GNC_CONFIG_HOME) and add the following line:
+
 ```
 (load (gnc-build-userdata-path "german-taxinvoice.scm"))
 ```
-GNC_DATA_HOME und GNC_CONFIG_HOME sind in unterschiedlichen Unterverzeichnissen des HOME-Verzeichnis/Profiles zu finden. Die Dateien in den Installationspfad von Gnucash oder Guile zu installieren ist nicht empfehlenswert, da bei Aktualisierungen diese wieder entfernt werden.
 
-## Benutzung
-Der Report ist dann unter unter Berichte -> Geschäft -> German Tax Invoice zu finden. Nach dem Aufruf muss dann eine Rechnung unter Optionen (aus der Werkzeugleiste ) -> Allgemein -> Rechnungsnummer -> Auswählen...
+## Usage
 
-Weiterhin müssen die zusätzlichen Angaben noch eingegeben werden wie die Bankdaten usw. damit diese in die Rechnung mit eingefügt werden können.
+If GnuCash was able to load the report successfully you will find it under
 
-**WICHTIG:** Da beim Schließen des Reports die Einstellungen (Bankdaten usw.) wieder verloren gehen, sollten sie diese Einstellungen mit dem 'Konf. speichern' sichern. Es befindet sich unter Berichte -> Gespeicherte Berichtsoptionen -> German Tax Invoice dann fest gespeicherte Konfigurationen die jederzeit wieder geladen werden können.
+`Reports -> Business -> German Tax Invoice`
 
-## Problemlösung
-Für Fehler seitens der Guile/Scheme Reports kann ich nur eingeschränkt Support geben.
+or in if you're using the German language pack:
+
+`Berichte -> Geschäft -> German Tax Invoice`
+
+Various different settings can be adjusted from within the report settings area.
+
+**WARNING:** Make sure you save your report after adjusting the settings, otherwise they will be lost the next time you open the report.
+
+## Development
+Clone the repository to your desired location. Edit the `config-user.scm` file like shown above but change it to:
+
+```
+(load "/absolute/path/to/repository/german-taxinvoice.scm")
+```
+
+You'll then be able to make adjustments to both the eguile and scm file. Make sure to quit and re-open GnuCash when you edit the `config-user.scm` or `german-taxinvoice.scm`. 
+
+The eguile file should be linked to the [GNC_DATA_HOME](https://wiki.gnucash.org/wiki/Configuration_Locations#GNC_DATA_HOME) directory. GnuCash expects the file to be in this directory. You can just link the file from the repository to this folder.
+If you're making chances to the eguile file itself you can CTRL+R in the opened report in GnuCash and it'll reload your changes instantly. 
 
 ## License
 This project is provided under the GNU General Public License v2. See [LICENSE](LICENSE).
