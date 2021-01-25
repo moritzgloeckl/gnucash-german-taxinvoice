@@ -184,7 +184,7 @@
                 (N_ "Font to use for the main heading.") "Sans Bold 18"))
   (add-option (gnc:make-font-option 
                 displaypage optname-text-font "d" 
-                (N_ "Font to use for everything else.") "Sans 10"))
+                (N_ "Font to use for everything else.") "Sans 11"))
   (add-option (gnc:make-pixmap-option
                 displaypage optname-logofile "e" 
                 (N_ "Name of a file containing a logo to be used on the report.") 

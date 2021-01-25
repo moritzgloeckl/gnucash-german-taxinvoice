@@ -109,12 +109,16 @@
 <!-- Note that the external stylesheet file is overridden by this following: -->
 <style type="text/css">
 div.main {
-  margin: 2em;
+  margin: 0em 2em 0em 2em;
   position: relative;
   min-height: 100%;
 }
-div.footer {
-  text-align: center;
+.footer {
+  width: 100%;
+}
+.footer > table {
+  width: 100%;
+  font-size: 80%;
 }
 thead
 {
@@ -124,20 +128,23 @@ tbody
 {
   display:table-row-group;
 }
-@page {
-  size: A4;
-  margin: 11mm 17mm 17mm 17mm;
-}
 @media print {
-  div.footer {
+  @page {
+    size: A4 portrait;
+    margin: 20mm 20mm 20mm 20mm;
+  }
+  .footer {
     position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
+    bottom: 0px;
+    width: 193mm;
+  }
+  .top-margin {
+    margin-top: 16mm;
   }
   html, body {
     width: 210mm;
-    height: 297mm;
+    height: 290mm;
+    margin: 0;
   }
 }
 body {
@@ -187,11 +194,11 @@ div#returnaddress {
   <td align="right"><table border="0">
       <?scm (if (and opt-row-contact coycontact) (begin ?>
         <tr>
-          <th colspan="2" align="left"><?scm:d coycontact ?></th>
+          <th colspan="2" align="right"><?scm:d coycontact ?></th>
         </tr>
       <?scm )) ?>
       <?scm (if (and opt-row-address coyaddr) (begin ?>
-       <tr><td align="left">
+       <tr><td colspan="2" align="right">
        <?scm:d (nl->br coyaddr) ?><br>
        <?scm )) ?>
       <?scm (if coyphone (begin ?>
@@ -223,7 +230,7 @@ div#returnaddress {
 </tr>
 </table>
 <hr>
-<table border="0" width="100%">
+<table border="0" width="100%" class="top-margin">
 <tr valign="top">
   <!-- customer info -->
   <td align="left">
@@ -443,17 +450,47 @@ div#returnaddress {
 <p><?scm:d (nl->br opt-extra-notes) ?></p>
 
 <div class="footer">
-<hr>
-  <div class="company-footer"><span><?scm:d (or coyname (G_ "Company Name")) ?>, <?scm:d coycontact ?>, <?scm:d (nl->delimiter coyaddr) ?></span></div>
-  <div class="company-numbers"><span><?scm:d optname-coyid-title ?></span><span><?scm (if coyid (begin ?><?scm:d coyid ?> <?scm )) ?></span></div>
-  <div class="company-banks-connection"><span><?scm:d opt-bank-connection-title ?></span><span><?scm:d opt-bank-name-title ?></span><span><?scm:d opt-bank-name ?></span>
-  <span><?scm:d opt-bank-nationalcode-title ?></span><span><?scm:d opt-bank-nationalcode ?></span>
-  <span><?scm:d opt-bank-swiftcode-title ?></span>
-  <span><?scm:d opt-bank-swiftcode ?></span>
-  <span><?scm:d opt-bank-accountnumber-title ?></span>
-  <span><?scm:d opt-bank-accountnumber ?></span>
-  <span><?scm:d opt-bank-ibancode-title ?></span>
-  <span><?scm:d opt-bank-ibancode ?></span></div>
+  <hr>
+  <table width="100%">
+    <tbody>
+      <tr>
+        <td><strong><?scm:d (or coyname (G_ "Company Name")) ?></strong></td>
+        <td><strong>Kontaktinformationen</strong></td>
+        <td><strong>Bankverbindung</strong></td>
+        <?scm (if (and coyid (not (string=? coyid ""))) (begin ?>
+          <td><strong>Firmendetails</strong></td>
+        <?scm )) ?>
+      </tr>
+      <tr>
+        <td><?scm:d coycontact ?></td>
+        <td>
+          Tel.: <?scm:d coyphone ?>
+        </td>
+        <td>Bank: <?scm:d opt-bank-name ?></td>
+
+        <?scm (if (and coyid (not (string=? coyid ""))) (begin ?>
+          <td>VAT ID: <?scm:d coyid ?></td>
+        <?scm )) ?>
+      </tr>
+      <tr>
+        <td><?scm:d (list-ref (string-split coyaddr #\nl) 0) ?></td>
+        <td>E-Mail: <?scm:d coyemail ?></td>
+        <td>IBAN: <?scm:d opt-bank-ibancode ?></td>
+        <?scm (if (and coyid (not (string=? coyid ""))) (begin ?>
+          <td><?scm (if optname-coyid-title (begin ?><?scm:d optname-coyid-title ?><?scm )) ?></td>
+        <?scm )) ?>
+      </tr>
+      <tr>
+        <td><?scm:d (list-ref (string-split coyaddr #\nl) 1) ?></td>
+        <td><?scm (if coyurl (begin ?>Internet: <?scm:d coyurl ?><?scm )) ?></td>
+        <td>SWIFT/BIC: <?scm:d opt-bank-swiftcode ?></td>
+
+        <?scm (if (and coyid (not (string=? coyid ""))) (begin ?>
+          <td>&nbsp;</td>
+        <?scm )) ?>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <?scm )) ; end of display-report function
